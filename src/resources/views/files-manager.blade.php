@@ -1,4 +1,5 @@
 <div class="grid bg-zinc-100 dark:text-zinc-400 dark:bg-zinc-800 ring-1 ring-zinc-300 dark:ring-zinc-700 rounded-md">
+
     @component('tallapp-files-manager::includes.container', [
         'header' => true,
     ])
@@ -22,12 +23,11 @@
             </div>
             <div class="grid grid-cols-12 gap-2">
                 @foreach (\Illuminate\Support\Collection::range(0, 11) as $key => $dir)
-                    @component('tallapp-files-manager::includes.item', [
-                        'file' => true,
-                        'text' => 'Filena...jpg',
-                        'icon' => 'file',
-                    ])
-                    @endcomponent
+                    @php
+                        $id = $key + 1;
+                    @endphp
+                    <livewire:file-item wire:id="{{ $id }}" id="{{ $id }}" icon="file"
+                        text="#{{ $key + 1 }} Filena...jpg" />
                 @endforeach
             </div>
         </div>
