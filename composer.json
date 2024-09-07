@@ -1,0 +1,30 @@
+{
+    "name": "ernandesrs/tallapp-files-manager",
+    "description": "A file manager using TallStack.",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Ernandesrs\\TallAppFilesManager\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Ernandes R Souza",
+            "email": "ernandesrsouza@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=8.1",
+        "laravel/framework": "^10.10",
+        "livewire/livewire": "^3.5",
+        "tallstackui/tallstackui": "^1.35"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Ernandesrs\\TallAppFilesManager\\TallAppFilesManagerProvider"
+            ]
+        }
+    }
+}
