@@ -75,7 +75,7 @@ class FilesManager extends Component
             ][$type]);
 
             return [
-                'id' => 'file_' . fake()->unique()->randomNumber(),
+                'id' => 'file-' . fake()->unique()->randomNumber(),
                 'name' => fake()->text(15) . $extension,
                 'type' => $type,
                 'icon' => [
@@ -95,7 +95,7 @@ class FilesManager extends Component
     private function getDirectories(): Collection
     {
         return Collection::range(0, 11)->map(fn() => [
-            'id' => 'directory_' . fake()->unique()->randomNumber(),
+            'id' => 'directory-' . fake()->unique()->randomNumber(),
             'name' => fake()->text(15),
             'icon' => 'folder',
             'href' => '#'
