@@ -49,15 +49,17 @@
 
     @component('tallapp-files-manager::includes.container')
         <div class="flex-1">
-            <div class="grid grid-cols-12 gap-2 mb-5">
-                @foreach ($directories as $key => $dir)
-                    @component('tallapp-files-manager::includes.item', [
-                        'text' => $dir['name'],
-                        'icon' => $dir['icon'],
-                    ])
-                    @endcomponent
-                @endforeach
-            </div>
+            @if (count($directores ?? []))
+                <div class="grid grid-cols-12 gap-2 mb-5">
+                    @foreach ($directories as $key => $dir)
+                        @component('tallapp-files-manager::includes.item', [
+                            'text' => $dir['name'],
+                            'icon' => $dir['icon'],
+                        ])
+                        @endcomponent
+                    @endforeach
+                </div>
+            @endif
             <div class="grid grid-cols-12 gap-2">
                 @foreach ($files as $key => $file)
                     <livewire:file-item id="{{ $file['id'] }}" icon="{{ $file['icon'] }}"

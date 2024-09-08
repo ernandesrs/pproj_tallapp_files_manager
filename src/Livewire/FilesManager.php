@@ -56,7 +56,7 @@ class FilesManager extends Component
                     ]
                 ],
             'files' => $this->getFiles(),
-            'directories' => $this->getDirectories()
+            'directories' => null
         ]);
     }
 
