@@ -19,6 +19,7 @@ class TallAppFilesManagerProvider extends ServiceProvider
 
         $this->loadViewsFrom(__DIR__ . '/resources/views', 'tallapp-files-manager');
         $this->loadMigrationsFrom(__DIR__ . '/migrations');
+        $this->loadTranslationsFrom(__DIR__ . '/lang', 'tallapp-files-manager');
 
         Livewire::component('files-manager', \Ernandesrs\TallAppFilesManager\Livewire\FilesManager::class);
         Livewire::component('file-item', \Ernandesrs\TallAppFilesManager\Livewire\FileItem::class);
