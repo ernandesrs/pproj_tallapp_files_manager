@@ -22,6 +22,7 @@ class TallAppFilesManagerProvider extends ServiceProvider
 
         Livewire::component('files-manager', \Ernandesrs\TallAppFilesManager\Livewire\FilesManager::class);
         Livewire::component('file-item', \Ernandesrs\TallAppFilesManager\Livewire\FileItem::class);
+        Livewire::component('file-upload', \Ernandesrs\TallAppFilesManager\Livewire\FileUpload::class);
 
         $this->publishes([
             __DIR__ . '/tallapp-files-manager.php' => config_path('tallapp-files-manager.php')
@@ -42,6 +43,6 @@ class TallAppFilesManagerProvider extends ServiceProvider
      */
     public function register()
     {
-
+        $this->mergeConfigFrom(__DIR__ . './tallapp-files-manager.php', 'tallapp-files-manager');
     }
 }

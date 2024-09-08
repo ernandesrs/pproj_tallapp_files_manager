@@ -24,12 +24,6 @@ class FilesManager extends Component
     public string $type = 'all';
 
     /**
-     * File
-     * @var mixed
-     */
-    public mixed $file = null;
-
-    /**
      * Type options
      * @var array
      */

@@ -41,8 +41,7 @@
                     </div>
                 </form>
 
-                <x-button class="lg:hidden" icon="arrow-up" />
-                <x-button class="hidden lg:flex" icon="arrow-up" text="Upload" />
+                <livewire:file-upload />
             </div>
         </div>
     @endcomponent
