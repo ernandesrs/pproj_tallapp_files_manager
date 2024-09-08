@@ -102,6 +102,7 @@ class FilesManager extends Component
                 'id' => 'file-' . fake()->unique()->randomNumber(),
                 'name' => fake()->text(15) . $extension,
                 'type' => $type,
+                'preview' => $type == 'image' ? 'https://placehold.co/100x100' : null,
                 'icon' => [
                     'video' => 'movie',
                     'document' => 'file',

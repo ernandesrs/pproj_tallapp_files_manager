@@ -9,6 +9,8 @@ class FileItem extends Component
 
     public string $id = '';
 
+    public ?string $preview = null;
+
     public string $icon = 'file';
 
     public string $text = 'Lorem dolor';

@@ -62,7 +62,8 @@
             @endif
             <div class="grid grid-cols-12 gap-2">
                 @foreach ($files as $key => $file)
-                    <livewire:file-item id="{{ $file['id'] }}" icon="{{ $file['icon'] }}"
+                    <livewire:file-item wire:key="{{ $key }}" id="{{ $file['id'] }}" icon="{{ $file['icon'] }}"
+                        preview="{{ $file['preview'] ?? null }}"
                         text="{{ $file['name'] }}" />
                 @endforeach
             </div>

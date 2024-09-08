@@ -2,6 +2,7 @@
     'id' => $id,
     'file' => true,
     'icon' => $icon,
+    'preview' => $preview,
     'text' => $text,
 ])
 @endcomponent

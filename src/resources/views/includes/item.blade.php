@@ -3,7 +3,14 @@
     'file' => false,
     'text' => null,
     'icon' => null,
+    'preview' => null,
 ])
+
+@php
+    $getShortName = function ($text) {
+        return $text;
+    };
+@endphp
 
 <div
     x-data="{
@@ -62,12 +69,20 @@
         </x-slot:footer>
     </x-modal>
 
-    <div class="w-full flex items-center">
-        <div class="">
-            <x-icon name="{{ $icon }}" class="w-5 sm:w-8" />
+    <div class="w-full flex gap-y-2 {{ $file ? 'flex-col' : '' }} justify-center items-center">
+        <div class="flex justify-center">
+            @if ($file && $preview)
+                <div
+                    class="relative overflow-hidden ring ring-offset-1 ring-zinc-200 dark:ring-zinc-700 w-8 h-6 lg:w-12 lg:h-10 rounded">
+                    <img class="w-[60px] absolute top-0 left-0" src="{{ $preview }}"
+                        alt="{{ $text }} Preview" />
+                </div>
+            @else
+                <x-icon name="{{ $icon }}" class="w-8 h-6 lg:w-12 lg:h-10" />
+            @endif
         </div>
         <div class="flex-1 inline-flex truncate">
-            {{ $text }}
+            {{ $file ? $getShortName($text) : $text }}
         </div>
     </div>
     @if ($file)
