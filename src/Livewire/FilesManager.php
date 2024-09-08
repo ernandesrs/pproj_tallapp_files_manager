@@ -7,12 +7,32 @@ use Livewire\Component;
 
 class FilesManager extends Component
 {
+    /**
+     * Filter: search
+     *
+     * @var string
+     */
     #[Url(as: 's', except: null)]
     public string $search = '';
 
+    /**
+     * Filter: type
+     *
+     * @var string
+     */
     #[Url(as: 'type', except: null)]
     public string $type = 'all';
 
+    /**
+     * File
+     * @var mixed
+     */
+    public mixed $file = null;
+
+    /**
+     * Type options
+     * @var array
+     */
     public array $typeOptions =
         [
             [
@@ -33,6 +53,10 @@ class FilesManager extends Component
             ]
         ];
 
+    /**
+     * Mount
+     * @return void
+     */
     public function mount()
     {
     }

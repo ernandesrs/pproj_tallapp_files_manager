@@ -13,8 +13,6 @@ return new class extends Migration {
         Schema::create('tall_files', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignId('user_id')->constrained('users', 'id')->nullOnDelete();
-
             $table->string('name');
             $table->string('type');
             $table->string('extension', 4);
