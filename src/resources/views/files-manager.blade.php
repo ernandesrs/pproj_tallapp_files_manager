@@ -60,12 +60,22 @@
                 </div>
             @endif
             <div class="grid grid-cols-12 gap-2">
-                @foreach ($files as $key => $file)
-                    <livewire:file-item wire:key="{{ $key }}" id="{{ $file['id'] }}" icon="{{ $file['icon'] }}"
-                        preview="{{ $file['preview'] ?? null }}"
-                        text="{{ $file['name'] }}" />
-                @endforeach
+                @if (count($files))
+                    @foreach ($files as $key => $file)
+                        <livewire:file-item wire:key="{{ $key }}" id="{{ $file['id'] }}"
+                            icon="{{ $file['icon'] }}"
+                            preview="{{ $file['preview'] ?? null }}"
+                            text="{{ $file['name'] }}" />
+                    @endforeach
+                @else
+                    <div class="text-lg text-center col-span-12 text-zinc-400">
+                        Nada para listar
+                    </div>
+                @endif
             </div>
         </div>
+    @endcomponent
+
+    @component('tallapp-files-manager::includes.container', ['footer' => true])
     @endcomponent
 </div>

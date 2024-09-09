@@ -1,6 +1,8 @@
 <?php
 
 namespace Ernandesrs\TallAppFilesManager\Livewire;
+use Ernandesrs\TallAppFilesManager\Enums\FileTypesEnum;
+use Ernandesrs\TallAppFilesManager\Models\TallFile;
 use Illuminate\Support\Collection;
 use Livewire\Attributes\Url;
 use Livewire\Component;
@@ -84,24 +86,17 @@ class FilesManager extends Component
      */
     private function getFiles(): Collection
     {
-        return Collection::range(0, 23)->map(function () {
-            $type = fake()->randomElement(['video', 'image', 'document']);
-            $extension = fake()->randomElement([
-                'video' => ['mp4', 'mkv', 'mov'],
-                'image' => ['jpg', 'png', 'webp'],
-                'document' => ['doc', 'pdf'],
-            ][$type]);
-
+        return TallFile::limit(5)->get()->map(function ($file) {
             return [
-                'id' => 'file-' . fake()->unique()->randomNumber(),
-                'name' => fake()->text(15) . $extension,
-                'type' => $type,
-                'preview' => $type == 'image' ? 'https://placehold.co/100x100' : null,
+                'id' => 'file-' . $file->id,
+                'name' => $file->extension,
+                'type' => $file->type,
+                'preview' => $file->type == FileTypesEnum::IMAGE ? \Storage::url($file->path) : null,
                 'icon' => [
-                    'video' => 'movie',
-                    'document' => 'file',
-                    'image' => 'photo'
-                ][$type],
+                    FileTypesEnum::VIDEO->value => 'movie',
+                    FileTypesEnum::DOCUMENT->value => 'file',
+                    FileTypesEnum::IMAGE->value => 'photo'
+                ][$file->type],
                 'href' => '#'
             ];
         });

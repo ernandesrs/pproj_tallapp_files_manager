@@ -15,6 +15,8 @@ return new class extends Migration {
 
             $table->string('name');
             $table->string('type');
+            $table->string('path');
+            $table->string('tags');
             $table->string('extension', 4);
             $table->bigInteger('size');
 
