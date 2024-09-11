@@ -1,6 +1,7 @@
 <?php
 
 namespace Ernandesrs\TallAppFilesManager\Livewire;
+use Ernandesrs\TallAppFilesManager\Models\TallFile;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Arr;
@@ -26,31 +27,113 @@ class FileUpload extends Component
         return view('tallapp-files-manager::file-upload');
     }
 
+    /**
+     * Save file
+     * @return void
+     */
     function saveFile()
     {
+        $validated = $this->validate([
+            'file' => ['required', 'mimes:' . implode(',', TallFile::allowedExtensions(merged: true))]
+        ]);
+
+        /**
+         * @var UploadedFile $file
+         */
+        $file = $validated['file'];
+
+        /**
+         * 1. save file(Done)
+         * 2. delete temp file(Done)
+         * 4. clear $file(Done)
+         * 5. clear errors bag
+         * 6. dispatch event to close modal
+         * 7. dispatch success alert
+         */
+
+        $fileType = TallFile::fileType($file->getClientOriginalExtension());
+        $path = $file->storePublicly(\Str::plural($fileType), []);
+        if (!$path) {
+            $this->toast()
+                ->error('Erro!', 'Houve um erro ao salvar arquivo.')
+                ->send();
+            return;
+        }
+
+        TallFile::create([
+            'name' => $file->getFilename(),
+            'original_name' => $file->getClientOriginalName(),
+            'type' => $fileType,
+            'path' => $path,
+            'tags' => 'a,b,c',
+            'extension' => $file->getClientOriginalExtension(),
+            'size' => $file->getSize(),
+        ]);
+
+        $this->deleteUploadedFile([
+            'temporary_name' => $file->getFilename(),
+            'real_name' => $file->getRealPath(),
+            'extension' => $file->getExtension(),
+            'size' => $file->getSize(),
+            'path' => $file->getPath(),
+            'url' => null,
+        ]);
+
+        $this->dispatch('close_tallapp_upload_modal');
+
         $this->toast()
             ->success('Pronto!', 'Arquivo salvo com sucesso')
             ->send();
     }
 
     /**
-     * Delete uploaded file
+     * Upload modal was closed
+     * * This method is called on upload modal was closed
      * @return void
      */
-    function deleteUploadedFile(array $content): void
+    function uploadModalWasClosed()
     {
-        /*
-         the $content contains:
-         [
-             'temporary_name',
-             'real_name',
-             'extension',
-             'size',
-             'path',
-             'url',
-         ]
-         */
+        if (!$this->file) {
+            return;
+        }
 
+        $this->deleteUploadedFile([
+            'temporary_name' => $this->file->getFilename(),
+            'real_name' => $this->file->getRealPath(),
+            'extension' => $this->file->getExtension(),
+            'size' => $this->file->getSize(),
+            'path' => $this->file->getPath(),
+            'url' => null,
+        ]);
+
+        $this->file = null;
+
+        $this->resetErrorBag();
+    }
+
+    /**
+     * Delete uploaded file
+     * The $content contains:
+     * [
+     *    'temporary_name',
+     *    'real_name',
+     *    'extension',
+     *    'size',
+     *    'path',
+     *    'url',
+     *  ]
+     * @return void
+     */
+    function deleteUploadedFile(
+        array $content = [
+            'temporary_name' => null,
+            'real_name' => null,
+            'extension' => null,
+            'size' => null,
+            'path' => null,
+            'url' => null,
+        ]
+    ): void {
         if (!$this->file) {
             return;
         }

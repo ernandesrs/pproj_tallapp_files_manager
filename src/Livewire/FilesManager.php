@@ -4,6 +4,7 @@ namespace Ernandesrs\TallAppFilesManager\Livewire;
 use Ernandesrs\TallAppFilesManager\Enums\FileTypesEnum;
 use Ernandesrs\TallAppFilesManager\Models\TallFile;
 use Illuminate\Support\Collection;
+use Livewire\Attributes\On;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 
@@ -61,6 +62,7 @@ class FilesManager extends Component
      * Render
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
+    #[On('close_tallapp_upload_modal')]
     public function render()
     {
         $this->type = empty($this->type) ? 'all' : $this->type;
@@ -86,17 +88,17 @@ class FilesManager extends Component
      */
     private function getFiles(): Collection
     {
-        return TallFile::limit(5)->get()->map(function ($file) {
+        return TallFile::orderBy('created_at', 'desc')->limit(15)->get()->map(function ($file) {
             return [
                 'id' => 'file-' . $file->id,
-                'name' => $file->extension,
+                'name' => $file->original_name,
                 'type' => $file->type,
                 'preview' => $file->type == FileTypesEnum::IMAGE ? \Storage::url($file->path) : null,
                 'icon' => [
                     FileTypesEnum::VIDEO->value => 'movie',
                     FileTypesEnum::DOCUMENT->value => 'file',
                     FileTypesEnum::IMAGE->value => 'photo'
-                ][$file->type],
+                ][$file->type->value],
                 'href' => '#'
             ];
         });

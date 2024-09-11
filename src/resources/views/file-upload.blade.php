@@ -1,13 +1,18 @@
 <div>
-    <x-modal id="tallapp-file-upload-modal" persistent z-index="z-40">
+    <x-modal
+        x-on:close_tallapp_upload_modal.window="$modalClose('tallapp-file-upload-modal')"
+        x-on:close="$wire.call('uploadModalWasClosed')"
+
+        id="tallapp-file-upload-modal"
+        z-index="z-40"
+        persistent>
         <x-slot:title>
             Novo upload
         </x-slot:title>
 
         <form>
             <x-upload wire:model="file" delete delete-method="deleteUploadedFile"
-                accept="*"
-                hint="Aceita: {{ implode(', ', config('tallapp-files-manager.allowed_extensions')) }}.">
+                accept="*">
                 <x-slot:footer when-uploaded>
                     <x-button class="w-full" wire:click="saveFile">
                         Salvar

@@ -14,6 +14,7 @@ return new class extends Migration {
             $table->id();
 
             $table->string('name');
+            $table->string('original_name');
             $table->string('type');
             $table->string('path');
             $table->string('tags');

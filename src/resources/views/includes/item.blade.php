@@ -81,7 +81,7 @@
                 <x-icon name="{{ $icon }}" class="w-8 h-6 lg:w-12 lg:h-10" />
             @endif
         </div>
-        <div class="flex-1 inline-flex truncate">
+        <div class="w-full inline-flex truncate">
             {{ $file ? $getShortName($text) : $text }}
         </div>
     </div>

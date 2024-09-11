@@ -2,18 +2,20 @@
 
 return [
     'allowed_extensions' => [
-        // video
-        'mp4',
-
-        // image
-        'png',
-        'jpg',
-        'jpeg',
-        'webp',
-
-        // document
-        'pdf',
-        'doc',
-        'docx',
+        'image' => [
+            'png',
+            'jpg',
+            'jpeg',
+            'webp'
+        ],
+        'video' => [
+            'mp4'
+        ],
+        'document' => [
+            // document
+            'pdf',
+            'doc',
+            'docx'
+        ],
     ]
 ];
