@@ -62,7 +62,7 @@
             <div class="grid grid-cols-12 gap-2">
                 @if (count($files))
                     @foreach ($files as $key => $file)
-                        <livewire:file-item wire:key="{{ $key }}" id="{{ $file['id'] }}"
+                        <livewire:file-item wire:key="{{ $file['id'] }}" id="{{ $file['id'] }}"
                             icon="{{ $file['icon'] }}"
                             preview="{{ $file['preview'] ?? null }}"
                             text="{{ $file['name'] }}" />

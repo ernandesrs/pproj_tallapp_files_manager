@@ -62,21 +62,13 @@ class FilesManager extends Component
      * Render
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
-    #[On('close_tallapp_upload_modal')]
+    #[On('close_tallapp_upload_modal'), On('tallapp_files_manager_deleted_file')]
     public function render()
     {
         $this->type = empty($this->type) ? 'all' : $this->type;
 
         return view('tallapp-files-manager::files-manager', [
-            'paths' =>
-                [
-                    [
-                        'text' => 'Vídeos'
-                    ],
-                    [
-                        'text' => '10-10-2024'
-                    ]
-                ],
+            'paths' => [],
             'files' => $this->getFiles(),
             'directories' => null
         ]);
@@ -88,20 +80,23 @@ class FilesManager extends Component
      */
     private function getFiles(): Collection
     {
-        return TallFile::orderBy('created_at', 'desc')->limit(15)->get()->map(function ($file) {
-            return [
-                'id' => 'file-' . $file->id,
-                'name' => $file->original_name,
-                'type' => $file->type,
-                'preview' => $file->type == FileTypesEnum::IMAGE ? \Storage::url($file->path) : null,
-                'icon' => [
-                    FileTypesEnum::VIDEO->value => 'movie',
-                    FileTypesEnum::DOCUMENT->value => 'file',
-                    FileTypesEnum::IMAGE->value => 'photo'
-                ][$file->type->value],
-                'href' => '#'
-            ];
-        });
+        return TallFile::orderBy('created_at', 'desc')
+            ->limit(15)
+            ->get()
+            ->map(function ($file) {
+                return [
+                    'id' => $file->id,
+                    'name' => $file->original_name,
+                    'type' => $file->type,
+                    'preview' => $file->type == FileTypesEnum::IMAGE ? \Storage::url($file->path) : null,
+                    'icon' => [
+                        FileTypesEnum::VIDEO->value => 'movie',
+                        FileTypesEnum::DOCUMENT->value => 'file',
+                        FileTypesEnum::IMAGE->value => 'photo'
+                    ][$file->type->value],
+                    'href' => '#'
+                ];
+            });
     }
 
     /**

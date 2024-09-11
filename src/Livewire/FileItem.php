@@ -1,10 +1,14 @@
 <?php
 
 namespace Ernandesrs\TallAppFilesManager\Livewire;
+use Ernandesrs\TallAppFilesManager\Models\TallFile;
 use Livewire\Component;
+use TallStackUi\Traits\Interactions;
 
 class FileItem extends Component
 {
+    use Interactions;
+
     public bool $detailModalShow = false;
 
     public string $id = '';
@@ -30,8 +34,27 @@ class FileItem extends Component
         // dd('show o ' . $id);
     }
 
+    /**
+     * Deletion confirmed
+     * @param int $id
+     * @return void
+     */
     function deletionConfirmed(int $id)
     {
-        dd('delete o ' . $id);
+        $file = TallFile::findOrFail($id);
+
+        // check authorization
+
+        // delete file
+        \Storage::delete($file->path);
+
+        // delete model
+        $file->delete();
+
+        $this->toast()
+            ->success('Excluído!', 'O arquivo foi excluído com sucesso.')
+            ->send();
+
+        $this->dispatch('tallapp_files_manager_deleted_file');
     }
 }
