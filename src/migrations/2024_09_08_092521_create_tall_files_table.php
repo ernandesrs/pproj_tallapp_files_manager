@@ -21,6 +21,8 @@ return new class extends Migration {
             $table->string('extension', 4);
             $table->bigInteger('size');
 
+            $table->fullText(['original_name', 'tags']);
+
             $table->timestamps();
         });
     }

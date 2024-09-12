@@ -1,8 +1,8 @@
 <?php
 
 namespace Ernandesrs\TallAppFilesManager\Livewire;
-use Ernandesrs\TallAppFilesManager\Enums\FileTypesEnum;
 use Ernandesrs\TallAppFilesManager\Models\TallFile;
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Url;
@@ -80,7 +80,22 @@ class FilesManager extends Component
      */
     private function getFiles(): Collection
     {
-        return TallFile::orderBy('created_at', 'desc')
+        $validated = \Validator::make([
+            'search' => $this->search,
+            'type' => $this->type
+        ], [
+            'search' => ['required', 'string'],
+            'type' => ['required', \Illuminate\Validation\Rule::enum(\Ernandesrs\TallAppFilesManager\Enums\FileTypesEnum::class)]
+        ])->valid();
+
+        $search = $validated['search'] ?? null;
+        $type = $validated['type'] ?? null;
+
+        return TallFile::when($search, function (Builder $query) use ($search) {
+            return $query->whereRaw('MATCH(original_name,tags) AGAINST(? IN BOOLEAN MODE)', $search);
+        })->when($type, function (Builder $query) use ($type) {
+            return $query->where('type', $type);
+        })->orderBy('created_at', 'desc')
             ->limit(15)
             ->get();
     }
