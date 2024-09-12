@@ -2,6 +2,8 @@
 
 namespace Ernandesrs\TallAppFilesManager\Livewire;
 use Ernandesrs\TallAppFilesManager\Models\TallFile;
+use Livewire\Attributes\Locked;
+use Livewire\Attributes\On;
 use Livewire\Component;
 use TallStackUi\Traits\Interactions;
 
@@ -9,47 +11,90 @@ class FileItem extends Component
 {
     use Interactions;
 
-    public bool $detailModalShow = false;
+    /**
+     * Icon
+     * @var string
+     */
+    public string $icon = "file";
 
+    /**
+     * Id
+     * @var string
+     */
+    #[Locked]
     public string $id = '';
 
-    public ?string $preview = null;
+    /**
+     * File
+     * @var null|TallFile
+     */
+    #[Locked]
+    public null|TallFile $tallFile = null;
 
-    public string $icon = 'file';
+    /**
+     * Original name
+     * @var string
+     */
+    public string $original_name = "";
 
-    public string $text = 'Lorem dolor';
+    /**
+     * Tags
+     * @var string
+     */
+    public string $tags = "";
 
+    /**
+     * Mount
+     * @return void
+     */
     function mount()
     {
+        $this->tallFile = TallFile::findOrFail($this->id);
+        $this->fill($this->tallFile->only(['original_name', 'tags']));
     }
 
+    /**
+     * Render
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
     function render()
     {
         return view('tallapp-files-manager::file-item');
     }
 
-    function showItem(int $id)
+    /**
+     * Update
+     * @return void
+     */
+    function update()
     {
-        $this->detailModalShow = true;
-        // dd('show o ' . $id);
+        $validated = $this->validate([
+            'original_name' => ['required', 'string'],
+            'tags' => ['required', 'string']
+        ]);
+
+        $this->tallFile->update($validated);
+
+        $this->toast()
+            ->success('Atualizado!', 'Os dados foram atualizados com sucesso')
+            ->send();
+
+        $this->dispatch('tallapp_files_manager_updated_file');
     }
 
     /**
      * Deletion confirmed
-     * @param int $id
      * @return void
      */
-    function deletionConfirmed(int $id)
+    function deletionConfirmed()
     {
-        $file = TallFile::findOrFail($id);
-
         // check authorization
 
         // delete file
-        \Storage::delete($file->path);
+        \Storage::delete($this->tallFile->path);
 
         // delete model
-        $file->delete();
+        $this->tallFile->delete();
 
         $this->toast()
             ->success('Excluído!', 'O arquivo foi excluído com sucesso.')

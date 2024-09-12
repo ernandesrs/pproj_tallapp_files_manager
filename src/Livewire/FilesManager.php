@@ -82,21 +82,7 @@ class FilesManager extends Component
     {
         return TallFile::orderBy('created_at', 'desc')
             ->limit(15)
-            ->get()
-            ->map(function ($file) {
-                return [
-                    'id' => $file->id,
-                    'name' => $file->original_name,
-                    'type' => $file->type,
-                    'preview' => $file->type == FileTypesEnum::IMAGE ? \Storage::url($file->path) : null,
-                    'icon' => [
-                        FileTypesEnum::VIDEO->value => 'movie',
-                        FileTypesEnum::DOCUMENT->value => 'file',
-                        FileTypesEnum::IMAGE->value => 'photo'
-                    ][$file->type->value],
-                    'href' => '#'
-                ];
-            });
+            ->get();
     }
 
     /**

@@ -22,4 +22,17 @@ enum FileTypesEnum: string
             self::IMAGE => __('tallapp-files-manager::file-types.image.single'),
         };
     }
+
+    /**
+     * Icon
+     * @return string
+     */
+    function icon(): string
+    {
+        return match ($this) {
+            self::DOCUMENT => 'file',
+            self::VIDEO => 'movie',
+            self::IMAGE => 'photo',
+        };
+    }
 }
