@@ -12,6 +12,10 @@ class FileUpload extends Component
 {
     use WithFileUploads, Interactions;
 
+    public string $original_name = "";
+
+    public array $tags = [];
+
     /**
      * File
      * @var ?UploadedFile
@@ -34,7 +38,10 @@ class FileUpload extends Component
     function saveFile()
     {
         $validated = $this->validate([
-            'file' => ['required', 'mimes:' . implode(',', TallFile::allowedExtensions(merged: true))]
+            'file' => ['required', 'mimes:' . implode(',', TallFile::allowedExtensions(merged: true))],
+            'original_name' => ['nullable', 'string', 'max:255'],
+            'tags' => ['nullable', 'array'],
+            'tags.*' => ['required', 'string', 'max:25']
         ]);
 
         /**
@@ -62,10 +69,10 @@ class FileUpload extends Component
 
         TallFile::create([
             'name' => $file->getFilename(),
-            'original_name' => $file->getClientOriginalName(),
+            'original_name' => !empty($validated['original_name']) ? $validated['original_name'] : \Str::replace("." . $file->getClientOriginalExtension(), "", $file->getClientOriginalName()),
             'type' => $fileType,
             'path' => $path,
-            'tags' => 'a,b,c',
+            'tags' => json_encode($validated['tags']),
             'extension' => $file->getClientOriginalExtension(),
             'size' => $file->getSize(),
         ]);
@@ -93,20 +100,20 @@ class FileUpload extends Component
      */
     function uploadModalWasClosed()
     {
-        if (!$this->file) {
-            return;
+        if ($this->file) {
+            $this->deleteUploadedFile([
+                'temporary_name' => $this->file->getFilename(),
+                'real_name' => $this->file->getRealPath(),
+                'extension' => $this->file->getExtension(),
+                'size' => $this->file->getSize(),
+                'path' => $this->file->getPath(),
+                'url' => null,
+            ]);
         }
 
-        $this->deleteUploadedFile([
-            'temporary_name' => $this->file->getFilename(),
-            'real_name' => $this->file->getRealPath(),
-            'extension' => $this->file->getExtension(),
-            'size' => $this->file->getSize(),
-            'path' => $this->file->getPath(),
-            'url' => null,
-        ]);
-
         $this->file = null;
+        $this->tags = [];
+        $this->original_name = "";
 
         $this->resetErrorBag();
     }

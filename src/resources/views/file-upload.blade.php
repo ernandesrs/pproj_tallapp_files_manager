@@ -10,15 +10,23 @@
             Novo upload
         </x-slot:title>
 
-        <form>
-            <x-upload wire:model="file" delete delete-method="deleteUploadedFile"
-                accept="*">
-                <x-slot:footer when-uploaded>
-                    <x-button class="w-full" wire:click="saveFile">
-                        Salvar
-                    </x-button>
-                </x-slot:footer>
-            </x-upload>
+        <form class="grid grid-cols-12 gap-6">
+            <div class="col-span-12">
+                <x-input wire:model="original_name" id="original_name" label="Nome:" hint="Opcional" />
+            </div>
+            <div class="col-span-12">
+                <x-tag wire:model="tags" id="tags" label="Tags:" hint="Algo que o ajuda encontrar este arquivo" />
+            </div>
+            <div class="col-span-12">
+                <x-upload wire:model="file" id="file" delete delete-method="deleteUploadedFile"
+                    accept="*" hint="Aceita {{ implode(', ', \Ernandesrs\TallAppFilesManager\Models\TallFile::allowedExtensions(merged: true)) }}.">
+                    <x-slot:footer when-uploaded>
+                        <x-button class="w-full" wire:click="saveFile">
+                            Salvar
+                        </x-button>
+                    </x-slot:footer>
+                </x-upload>
+            </div>
         </form>
 
         <x-slot:footer>
