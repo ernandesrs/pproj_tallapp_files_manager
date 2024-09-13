@@ -24,7 +24,8 @@ class TallFile extends Model
      * @var array
      */
     protected $casts = [
-        'type' => \Ernandesrs\TallAppFilesManager\Enums\FileTypesEnum::class
+        'type' => \Ernandesrs\TallAppFilesManager\Enums\FileTypesEnum::class,
+        'tags' => 'array'
     ];
 
     /**

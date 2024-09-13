@@ -39,9 +39,9 @@ class FileItem extends Component
 
     /**
      * Tags
-     * @var string
+     * @var array
      */
-    public string $tags = "";
+    public array $tags = [];
 
     /**
      * Mount
@@ -70,7 +70,8 @@ class FileItem extends Component
     {
         $validated = $this->validate([
             'original_name' => ['required', 'string'],
-            'tags' => ['required', 'string']
+            'tags' => ['nullable', 'array'],
+            'tags.*' => ['required', 'string'],
         ]);
 
         $this->tallFile->update($validated);

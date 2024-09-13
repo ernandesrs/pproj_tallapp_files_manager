@@ -72,7 +72,7 @@ class FileUpload extends Component
             'original_name' => !empty($validated['original_name']) ? $validated['original_name'] : \Str::replace("." . $file->getClientOriginalExtension(), "", $file->getClientOriginalName()),
             'type' => $fileType,
             'path' => $path,
-            'tags' => json_encode($validated['tags']),
+            'tags' => $validated['tags'] ?? [],
             'extension' => $file->getClientOriginalExtension(),
             'size' => $file->getSize(),
         ]);

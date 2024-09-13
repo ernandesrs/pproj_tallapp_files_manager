@@ -65,7 +65,7 @@
 
             <div class="col-span-6">
                 <div class="text-xs text-zinc-400 mb-1">Tags:</div>
-                <div class="w-full truncate">{{ $tallFile->tags }}</div>
+                <div class="w-full">{{ implode(', ', $tallFile->tags) }}</div>
             </div>
 
             <div class="col-span-6">
@@ -117,7 +117,7 @@
                 <x-input id="original_name_{{ $uniqId }}" wire:model="original_name" label="Nome original:" />
             </div>
             <div class="col-span-12">
-                <x-input id="tags_{{ $uniqId }}" wire:model="tags" label="Tags:" />
+                <x-tag id="tags_{{ $uniqId }}" wire:model="tags" label="Tags:" />
             </div>
         </div>
         <div class="flex justify-between">
