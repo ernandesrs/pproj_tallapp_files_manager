@@ -15,7 +15,7 @@
                 <x-input wire:model="original_name" id="original_name" label="Nome:" hint="Opcional" />
             </div>
             <div class="col-span-12">
-                <x-tag wire:model="tags" id="tags" label="Tags:" hint="Algo que o ajuda encontrar este arquivo" />
+                <x-tag wire:model="tags" id="tags" label="Tags:" hint="Palavras chaves que o ajuda encontrar este arquivo separados por vírgulas." />
             </div>
             <div class="col-span-12">
                 <x-upload wire:model="file" id="file" delete delete-method="deleteUploadedFile"
