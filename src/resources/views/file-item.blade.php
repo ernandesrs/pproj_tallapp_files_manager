@@ -9,9 +9,22 @@
             'id' => $tallFile->id,
             'text' => $tallFile->original_name,
         ]) }},
+        videoPlayer: null,
 
         init() {
             this.wireId = $el.getAttribute('wire:id')
+
+            $nextTick(() => {
+                this.videoPlayer = $el.querySelector('.videoPlayer')
+            });
+        },
+
+        fileDetailDialogWasClosed() {
+            if (!this.videoPlayer) {
+                return
+            }
+
+            this.videoPlayer.pause()
         },
 
         deleteConfirmation() {
@@ -28,15 +41,66 @@
         ? \Storage::url($tallFile->path)
         : null">
 
-    <x-modal id="tallapp-item-detail-dialog-{{ $tallFile->id }}" z-index="z-40" persistent>
+    <x-modal
+        x-on:close="fileDetailDialogWasClosed"
+        id="tallapp-item-detail-dialog-{{ $tallFile->id }}" z-index="z-40" persistent>
         <x-slot:title>
             Detalhes: {{ $tallFile->original_name }}
         </x-slot:title>
-        <div class="mb-5">
-            TallStackUi
-        </div>
-        <div class="flex justify-start">
-            <x-button x-on:click="deleteConfirmation" icon="trash" text="Excluir item" color="rose" sm flat />
+        <div class="mb-5 grid grid-cols-12 gap-x-6 gap-y-3">
+            <div class="col-span-6">
+                <div class="text-xs text-zinc-400 mb-1">Nome:</div>
+                <div class="w-full truncate">{{ $tallFile->original_name }}</div>
+            </div>
+
+            <div class="col-span-3">
+                <div class="text-xs text-zinc-400 mb-1">Extensão:</div>
+                <div>{{ $tallFile->extension }}</div>
+            </div>
+
+            <div class="col-span-3">
+                <div class="text-xs text-zinc-400 mb-1">Tamanho:</div>
+                <div>{{ number_format($tallFile->size / (1024 * 1024), 2) }} MB</div>
+            </div>
+
+            <div class="col-span-6">
+                <div class="text-xs text-zinc-400 mb-1">Tags:</div>
+                <div class="w-full truncate">{{ $tallFile->tags }}</div>
+            </div>
+
+            <div class="col-span-6">
+                <div class="text-xs text-zinc-400 mb-1">Data de upload:</div>
+                <div>{{ $tallFile->created_at->format('d/m/Y H:i:s') }}</div>
+            </div>
+
+            <div class="col-span-12">
+                <div class="text-xs text-zinc-400 mb-1">Previsualização:</div>
+
+                <div
+                    class="relative overflow-hidden flex items-center justify-center p-2 w-full h-[350px] rounded-md">
+                    @switch($tallFile->type)
+                        @case(\Ernandesrs\TallAppFilesManager\Enums\FileTypesEnum::IMAGE)
+                            <img class="absolute h-full" src="{{ \Storage::url($tallFile->path) }}"
+                                alt="{{ $tallFile->original_name }} Preview">
+                        @break
+
+                        @case(\Ernandesrs\TallAppFilesManager\Enums\FileTypesEnum::DOCUMENT)
+                            <a href="{{ \Storage::url($tallFile->path) }}" target="_blank"
+                                title="{{ $tallFile->original_name }}">
+                                Ver arquivo
+                            </a>
+                        @break
+
+                        @case(\Ernandesrs\TallAppFilesManager\Enums\FileTypesEnum::VIDEO)
+                            <video class="h-full videoPlayer" src="{{ \Storage::url($tallFile->path) }}" preload="metadata"
+                                controlslist="nodownload noremoteplayback" crossorigin="use-credentials"
+                                controls></video>
+                        @break
+
+                        @default
+                    @endswitch
+                </div>
+            </div>
         </div>
         <x-slot:footer>
             <x-button x-on:click="$modalClose('tallapp-item-detail-dialog-{{ $tallFile->id }}')" icon="x"
