@@ -1,7 +1,8 @@
 <?php
 
 namespace Ernandesrs\TallAppFilesManager\Livewire;
-use Ernandesrs\TallAppFilesManager\Models\TallFile;
+
+use Ernandesrs\TallAppFilesManager\Models\File;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Arr;
@@ -38,7 +39,7 @@ class FileUpload extends Component
     function saveFile()
     {
         $validated = $this->validate([
-            'file' => ['required', 'mimes:' . implode(',', TallFile::allowedExtensions(merged: true))],
+            'file' => ['required', 'mimes:' . implode(',', File::allowedExtensions(merged: true))],
             'original_name' => ['nullable', 'string', 'max:255'],
             'tags' => ['nullable', 'array'],
             'tags.*' => ['required', 'string', 'max:25']
@@ -58,7 +59,7 @@ class FileUpload extends Component
          * 7. dispatch success alert
          */
 
-        $fileType = TallFile::fileType($file->getClientOriginalExtension());
+        $fileType = File::fileType($file->getClientOriginalExtension());
         $path = $file->storePublicly(\Str::plural($fileType), []);
         if (!$path) {
             $this->toast()
@@ -67,7 +68,7 @@ class FileUpload extends Component
             return;
         }
 
-        TallFile::create([
+        File::create([
             'name' => $file->getFilename(),
             'original_name' => !empty($validated['original_name']) ? $validated['original_name'] : \Str::replace("." . $file->getClientOriginalExtension(), "", $file->getClientOriginalName()),
             'type' => $fileType,

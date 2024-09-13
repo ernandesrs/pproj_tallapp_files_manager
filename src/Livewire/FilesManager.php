@@ -1,7 +1,8 @@
 <?php
 
 namespace Ernandesrs\TallAppFilesManager\Livewire;
-use Ernandesrs\TallAppFilesManager\Models\TallFile;
+
+use Ernandesrs\TallAppFilesManager\Models\File;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 use Livewire\Attributes\On;
@@ -91,7 +92,7 @@ class FilesManager extends Component
         $search = $validated['search'] ?? null;
         $type = $validated['type'] ?? null;
 
-        return TallFile::when($search, function (Builder $query) use ($search) {
+        return File::when($search, function (Builder $query) use ($search) {
             return $query->whereRaw('MATCH(original_name,tags) AGAINST(? IN BOOLEAN MODE)', $search);
         })->when($type, function (Builder $query) use ($type) {
             return $query->where('type', $type);

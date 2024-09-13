@@ -1,9 +1,9 @@
 <?php
 
 namespace Ernandesrs\TallAppFilesManager\Livewire;
-use Ernandesrs\TallAppFilesManager\Models\TallFile;
+
+use Ernandesrs\TallAppFilesManager\Models\File;
 use Livewire\Attributes\Locked;
-use Livewire\Attributes\On;
 use Livewire\Component;
 use TallStackUi\Traits\Interactions;
 
@@ -26,10 +26,10 @@ class FileItem extends Component
 
     /**
      * File
-     * @var null|TallFile
+     * @var null|File
      */
     #[Locked]
-    public null|TallFile $tallFile = null;
+    public null|File $file = null;
 
     /**
      * Original name
@@ -49,8 +49,8 @@ class FileItem extends Component
      */
     function mount()
     {
-        $this->tallFile = TallFile::findOrFail($this->id);
-        $this->fill($this->tallFile->only(['original_name', 'tags']));
+        $this->file = File::findOrFail($this->id);
+        $this->fill($this->file->only(['original_name', 'tags']));
     }
 
     /**
@@ -74,7 +74,7 @@ class FileItem extends Component
             'tags.*' => ['required', 'string'],
         ]);
 
-        $this->tallFile->update($validated);
+        $this->file->update($validated);
 
         $this->toast()
             ->success('Atualizado!', 'Os dados foram atualizados com sucesso')
@@ -92,10 +92,10 @@ class FileItem extends Component
         // check authorization
 
         // delete file
-        \Storage::delete($this->tallFile->path);
+        \Storage::delete($this->file->path);
 
         // delete model
-        $this->tallFile->delete();
+        $this->file->delete();
 
         $this->toast()
             ->success('Excluído!', 'O arquivo foi excluído com sucesso.')

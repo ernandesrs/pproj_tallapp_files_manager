@@ -6,8 +6,8 @@
     x-data="{
         ...{{ json_encode([
             'wireId' => null,
-            'id' => $tallFile->id,
-            'text' => $tallFile->original_name,
+            'id' => $file->id,
+            'text' => $file->original_name,
         ]) }},
         videoPlayer: null,
 
@@ -36,41 +36,41 @@
                 .send();
         }
     }"
-    :file="true" :id="$tallFile->id" :text="$tallFile->original_name" :icon="$tallFile->type->icon()"
-    :preview="$tallFile->type == \Ernandesrs\TallAppFilesManager\Enums\FileTypesEnum::IMAGE
-        ? \Storage::url($tallFile->path)
+    :file="true" :id="$file->id" :text="$file->original_name" :icon="$file->type->icon()"
+    :preview="$file->type == \Ernandesrs\TallAppFilesManager\Enums\FileTypesEnum::IMAGE
+        ? \Storage::url($file->path)
         : null">
 
     <x-modal
         x-on:close="fileDetailDialogWasClosed"
-        id="tallapp-item-detail-dialog-{{ $tallFile->id }}" z-index="z-40" persistent>
+        id="tallapp-item-detail-dialog-{{ $file->id }}" z-index="z-40" persistent>
         <x-slot:title>
-            Detalhes: {{ $tallFile->original_name }}
+            Detalhes: {{ $file->original_name }}
         </x-slot:title>
         <div class="mb-5 grid grid-cols-12 gap-x-6 gap-y-3">
             <div class="col-span-6">
                 <div class="text-xs text-zinc-400 mb-1">Nome:</div>
-                <div class="w-full truncate">{{ $tallFile->original_name }}</div>
+                <div class="w-full truncate">{{ $file->original_name }}</div>
             </div>
 
             <div class="col-span-3">
                 <div class="text-xs text-zinc-400 mb-1">Extensão:</div>
-                <div>{{ $tallFile->extension }}</div>
+                <div>{{ $file->extension }}</div>
             </div>
 
             <div class="col-span-3">
                 <div class="text-xs text-zinc-400 mb-1">Tamanho:</div>
-                <div>{{ number_format($tallFile->size / (1024 * 1024), 2) }} MB</div>
+                <div>{{ number_format($file->size / (1024 * 1024), 2) }} MB</div>
             </div>
 
             <div class="col-span-6">
                 <div class="text-xs text-zinc-400 mb-1">Tags:</div>
-                <div class="w-full">{{ implode(', ', $tallFile->tags) }}</div>
+                <div class="w-full">{{ implode(', ', $file->tags) }}</div>
             </div>
 
             <div class="col-span-6">
                 <div class="text-xs text-zinc-400 mb-1">Data de upload:</div>
-                <div>{{ $tallFile->created_at->format('d/m/Y H:i:s') }}</div>
+                <div>{{ $file->created_at->format('d/m/Y H:i:s') }}</div>
             </div>
 
             <div class="col-span-12">
@@ -78,21 +78,21 @@
 
                 <div
                     class="relative overflow-hidden flex items-center justify-center p-2 w-full h-[350px] rounded-md">
-                    @switch($tallFile->type)
+                    @switch($file->type)
                         @case(\Ernandesrs\TallAppFilesManager\Enums\FileTypesEnum::IMAGE)
-                            <img class="absolute h-full" src="{{ \Storage::url($tallFile->path) }}"
-                                alt="{{ $tallFile->original_name }} Preview">
+                            <img class="absolute h-full" src="{{ \Storage::url($file->path) }}"
+                                alt="{{ $file->original_name }} Preview">
                         @break
 
                         @case(\Ernandesrs\TallAppFilesManager\Enums\FileTypesEnum::DOCUMENT)
-                            <a href="{{ \Storage::url($tallFile->path) }}" target="_blank"
-                                title="{{ $tallFile->original_name }}">
+                            <a href="{{ \Storage::url($file->path) }}" target="_blank"
+                                title="{{ $file->original_name }}">
                                 Ver arquivo
                             </a>
                         @break
 
                         @case(\Ernandesrs\TallAppFilesManager\Enums\FileTypesEnum::VIDEO)
-                            <video class="h-full videoPlayer" src="{{ \Storage::url($tallFile->path) }}" preload="metadata"
+                            <video class="h-full videoPlayer" src="{{ \Storage::url($file->path) }}" preload="metadata"
                                 controlslist="nodownload noremoteplayback" crossorigin="use-credentials"
                                 controls></video>
                         @break
@@ -103,14 +103,14 @@
             </div>
         </div>
         <x-slot:footer>
-            <x-button x-on:click="$modalClose('tallapp-item-detail-dialog-{{ $tallFile->id }}')" icon="x"
+            <x-button x-on:click="$modalClose('tallapp-item-detail-dialog-{{ $file->id }}')" icon="x"
                 text="Fechar" color="rose" />
         </x-slot:footer>
     </x-modal>
 
-    <x-modal id="tallapp-item-edit-dialog-{{ $tallFile->id }}" z-index="z-40" persistent>
+    <x-modal id="tallapp-item-edit-dialog-{{ $file->id }}" z-index="z-40" persistent>
         <x-slot:title>
-            Editar: {{ $tallFile->original_name }}
+            Editar: {{ $file->original_name }}
         </x-slot:title>
         <div class="mb-5 grid grid-cols-12 gap-6">
             <div class="col-span-12">
@@ -125,16 +125,16 @@
             <x-button x-on:click="deleteConfirmation" icon="trash" text="Excluir item" color="rose" flat />
         </div>
         <x-slot:footer>
-            <x-button x-on:click="$modalClose('tallapp-item-edit-dialog-{{ $tallFile->id }}')" icon="x"
+            <x-button x-on:click="$modalClose('tallapp-item-edit-dialog-{{ $file->id }}')" icon="x"
                 text="Fechar" color="rose" />
         </x-slot:footer>
     </x-modal>
 
     <div class="mt-3 flex gap-x-1">
-        <x-button x-on:click="$modalOpen('tallapp-item-edit-dialog-{{ $tallFile->id }}')" icon="edit"
+        <x-button x-on:click="$modalOpen('tallapp-item-edit-dialog-{{ $file->id }}')" icon="edit"
             color="primary"
             sm />
-        <x-button x-on:click="$modalOpen('tallapp-item-detail-dialog-{{ $tallFile->id }}')" icon="list-details"
+        <x-button x-on:click="$modalOpen('tallapp-item-detail-dialog-{{ $file->id }}')" icon="list-details"
             color="primary"
             sm />
         <x-button x-on:click="deleteConfirmation" icon="trash" color="rose" sm />

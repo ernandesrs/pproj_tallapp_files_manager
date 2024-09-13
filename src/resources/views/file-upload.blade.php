@@ -19,7 +19,7 @@
             </div>
             <div class="col-span-12">
                 <x-upload wire:model="file" id="file" delete delete-method="deleteUploadedFile"
-                    accept="*" hint="Aceita {{ implode(', ', \Ernandesrs\TallAppFilesManager\Models\TallFile::allowedExtensions(merged: true)) }}.">
+                    accept="*" hint="Aceita {{ implode(', ', \Ernandesrs\TallAppFilesManager\Models\File::allowedExtensions(merged: true)) }}.">
                     <x-slot:footer when-uploaded>
                         <x-button class="w-full" wire:click="saveFile">
                             Salvar

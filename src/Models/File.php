@@ -3,7 +3,7 @@
 namespace Ernandesrs\TallAppFilesManager\Models;
 use Illuminate\Database\Eloquent\Model;
 
-class TallFile extends Model
+class File extends Model
 {
     /**
      * Fillables
@@ -31,7 +31,7 @@ class TallFile extends Model
     /**
      * Allowed extensions
      * @param bool $merged
-     * @return array|mixed|\Illuminate\Config\Repository
+     * @return array|mixed
      */
     static function allowedExtensions(bool $merged = false)
     {
