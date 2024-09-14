@@ -3,6 +3,7 @@
 namespace Ernandesrs\TallAppFilesManager\Livewire;
 
 use Ernandesrs\TallAppFilesManager\Models\File;
+use Ernandesrs\TallAppFilesManager\Services\FileService;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Arr;
@@ -45,47 +46,15 @@ class FileUpload extends Component
             'tags.*' => ['required', 'string', 'max:25']
         ]);
 
-        /**
-         * @var UploadedFile $file
-         */
-        $file = $validated['file'];
-
-        /**
-         * 1. save file(Done)
-         * 2. delete temp file(Done)
-         * 4. clear $file(Done)
-         * 5. clear errors bag
-         * 6. dispatch event to close modal
-         * 7. dispatch success alert
-         */
-
-        $fileType = File::fileType($file->getClientOriginalExtension());
-        $path = $file->storePublicly(\Str::plural($fileType), []);
-        if (!$path) {
+        $createdFile = FileService::create($validated);
+        if (!$createdFile) {
             $this->toast()
                 ->error('Erro!', 'Houve um erro ao salvar arquivo.')
                 ->send();
             return;
         }
 
-        File::create([
-            'name' => $file->getFilename(),
-            'original_name' => !empty($validated['original_name']) ? $validated['original_name'] : \Str::replace("." . $file->getClientOriginalExtension(), "", $file->getClientOriginalName()),
-            'type' => $fileType,
-            'path' => $path,
-            'tags' => $validated['tags'] ?? [],
-            'extension' => $file->getClientOriginalExtension(),
-            'size' => $file->getSize(),
-        ]);
-
-        $this->deleteUploadedFile([
-            'temporary_name' => $file->getFilename(),
-            'real_name' => $file->getRealPath(),
-            'extension' => $file->getExtension(),
-            'size' => $file->getSize(),
-            'path' => $file->getPath(),
-            'url' => null,
-        ]);
+        $this->deleteUploadedFile(uploadedFile: $this->file);
 
         $this->dispatch('close_tallapp_upload_modal');
 
@@ -102,14 +71,7 @@ class FileUpload extends Component
     function uploadModalWasClosed()
     {
         if ($this->file) {
-            $this->deleteUploadedFile([
-                'temporary_name' => $this->file->getFilename(),
-                'real_name' => $this->file->getRealPath(),
-                'extension' => $this->file->getExtension(),
-                'size' => $this->file->getSize(),
-                'path' => $this->file->getPath(),
-                'url' => null,
-            ]);
+            $this->deleteUploadedFile(uploadedFile: $this->file);
         }
 
         $this->file = null;
@@ -140,8 +102,20 @@ class FileUpload extends Component
             'size' => null,
             'path' => null,
             'url' => null,
-        ]
+        ],
+        ?UploadedFile $uploadedFile = null
     ): void {
+        if ($uploadedFile) {
+            $content = [
+                'temporary_name' => $uploadedFile->getFilename(),
+                'real_name' => $uploadedFile->getRealPath(),
+                'extension' => $uploadedFile->getExtension(),
+                'size' => $uploadedFile->getSize(),
+                'path' => $uploadedFile->getPath(),
+                'url' => null,
+            ];
+        }
+
         if (!$this->file) {
             return;
         }
