@@ -37,4 +37,18 @@ class FileService
             'size' => $file->getSize(),
         ]);
     }
+
+    /**
+     * Creation rules
+     * @return array
+     */
+    static function createRules(): array
+    {
+        return [
+            'file' => ['required', 'mimes:' . implode(',', File::allowedExtensions(merged: true))],
+            'original_name' => ['nullable', 'string', 'max:255'],
+            'tags' => ['nullable', 'array'],
+            'tags.*' => ['required', 'string', 'max:25']
+        ];
+    }
 }

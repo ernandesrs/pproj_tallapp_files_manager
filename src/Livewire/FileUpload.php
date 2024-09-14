@@ -39,12 +39,7 @@ class FileUpload extends Component
      */
     function saveFile()
     {
-        $validated = $this->validate([
-            'file' => ['required', 'mimes:' . implode(',', File::allowedExtensions(merged: true))],
-            'original_name' => ['nullable', 'string', 'max:255'],
-            'tags' => ['nullable', 'array'],
-            'tags.*' => ['required', 'string', 'max:25']
-        ]);
+        $validated = $this->validate(FileService::createRules());
 
         $createdFile = FileService::create($validated);
         if (!$createdFile) {
