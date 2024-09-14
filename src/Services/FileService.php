@@ -39,6 +39,17 @@ class FileService
     }
 
     /**
+     * Update file data
+     * @param array $validated
+     * @param \Ernandesrs\TallAppFilesManager\Models\File $file
+     * @return bool
+     */
+    static function update(array $validated, File $file): bool
+    {
+        return $file->update($validated);
+    }
+
+    /**
      * Creation rules
      * @return array
      */
@@ -50,5 +61,20 @@ class FileService
             'tags' => ['nullable', 'array'],
             'tags.*' => ['required', 'string', 'max:25']
         ];
+    }
+
+    /**
+     * Update rules
+     * @return array
+     */
+    static function updateRules(): array
+    {
+        $rules = self::createRules();
+
+        unset($rules['file']);
+
+        $rules['original_name'] = ['required', 'string', 'max:255'];
+
+        return $rules;
     }
 }

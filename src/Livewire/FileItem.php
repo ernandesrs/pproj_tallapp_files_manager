@@ -3,6 +3,7 @@
 namespace Ernandesrs\TallAppFilesManager\Livewire;
 
 use Ernandesrs\TallAppFilesManager\Models\File;
+use Ernandesrs\TallAppFilesManager\Services\FileService;
 use Livewire\Attributes\Locked;
 use Livewire\Component;
 use TallStackUi\Traits\Interactions;
@@ -68,13 +69,10 @@ class FileItem extends Component
      */
     function update()
     {
-        $validated = $this->validate([
-            'original_name' => ['required', 'string'],
-            'tags' => ['nullable', 'array'],
-            'tags.*' => ['required', 'string'],
-        ]);
-
-        $this->file->update($validated);
+        FileService::update(
+            $this->validate(FileService::updateRules()),
+            $this->file
+        );
 
         $this->toast()
             ->success('Atualizado!', 'Os dados foram atualizados com sucesso')
