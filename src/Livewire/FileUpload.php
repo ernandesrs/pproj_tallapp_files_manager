@@ -2,7 +2,6 @@
 
 namespace Ernandesrs\TallAppFilesManager\Livewire;
 
-use Ernandesrs\TallAppFilesManager\Models\File;
 use Ernandesrs\TallAppFilesManager\Services\FileService;
 use Livewire\Component;
 use Livewire\WithFileUploads;
