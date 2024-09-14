@@ -50,6 +50,21 @@ class FileService
     }
 
     /**
+     * Delete file and registered file data
+     * @param \Ernandesrs\TallAppFilesManager\Models\File $file
+     * @return bool
+     */
+    static function delete(File $file): bool
+    {
+        // delete file
+        if (\Storage::fileExists($file->path)) {
+            \Storage::delete($file->path);
+        }
+
+        return $file->delete();
+    }
+
+    /**
      * Creation rules
      * @return array
      */

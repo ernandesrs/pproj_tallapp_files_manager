@@ -89,11 +89,7 @@ class FileItem extends Component
     {
         // check authorization
 
-        // delete file
-        \Storage::delete($this->file->path);
-
-        // delete model
-        $this->file->delete();
+        FileService::delete($this->file);
 
         $this->toast()
             ->success('Excluído!', 'O arquivo foi excluído com sucesso.')
