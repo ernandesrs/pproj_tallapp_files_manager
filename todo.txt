@@ -1,2 +1,2 @@
-[ pending ] Criar um serviço e concentrar lógicas de validação de arquivos, criação, edição e exclusão.
+[ done ] Criar um serviço e concentrar lógicas de validação de arquivos, criação, edição e exclusão.
 [ pending ] Implementar recursos de autorização para acesso, edição, exclusão, etc.
