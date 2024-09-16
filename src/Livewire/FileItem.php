@@ -83,6 +83,8 @@ class FileItem extends Component
      */
     function update()
     {
+        $this->checkAuthorization('update', $this->file);
+
         FileService::update(
             $this->validate(FileService::updateRules()),
             $this->file
@@ -101,7 +103,7 @@ class FileItem extends Component
      */
     function deletionConfirmed()
     {
-        // check authorization
+        $this->checkAuthorization('delete', $this->file);
 
         FileService::delete($this->file);
 

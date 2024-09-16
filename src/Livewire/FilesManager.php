@@ -15,12 +15,6 @@ class FilesManager extends Component
     use Authorization;
 
     /**
-     * Policy class
-     * @var ?string
-     */
-    public ?string $policyClass = null;
-
-    /**
      * Filter: search
      *
      * @var string
