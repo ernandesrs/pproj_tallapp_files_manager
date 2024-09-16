@@ -41,6 +41,8 @@
                     </div>
                 </form>
 
+                @if ($this->checkAuthorization('create', \Ernandesrs\TallAppFilesManager\Models\File::class, true))
+                @endif
                 <livewire:file-upload />
             </div>
         </div>

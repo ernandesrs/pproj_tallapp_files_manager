@@ -3,6 +3,8 @@
 namespace Ernandesrs\TallAppFilesManager\Livewire;
 
 use Ernandesrs\TallAppFilesManager\Services\FileService;
+use Ernandesrs\TallAppFilesManager\Traits\Authorization;
+use Ernandesrs\TallAppFilesManager\Models\File;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Arr;
@@ -11,7 +13,7 @@ use TallStackUi\Traits\Interactions;
 
 class FileUpload extends Component
 {
-    use WithFileUploads, Interactions;
+    use WithFileUploads, Interactions, Authorization;
 
     public string $original_name = "";
 
@@ -25,10 +27,17 @@ class FileUpload extends Component
 
     /**
      * Render view
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     * @return string|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     function render()
     {
+        if (!$this->checkAuthorization('create', File::class, true)) {
+            return <<<'HTML'
+            <div>
+            </div>
+            HTML;
+        }
+
         return view('tallapp-files-manager::file-upload');
     }
 
@@ -38,17 +47,19 @@ class FileUpload extends Component
      */
     function saveFile()
     {
+        $this->checkAuthorization('create', File::class);
+
         $validated = $this->validate(FileService::createRules());
 
         $createdFile = FileService::create($validated);
+
+        $this->deleteUploadedFile(uploadedFile: $this->file);
         if (!$createdFile) {
             $this->toast()
                 ->error('Erro!', 'Houve um erro ao salvar arquivo.')
                 ->send();
             return;
         }
-
-        $this->deleteUploadedFile(uploadedFile: $this->file);
 
         $this->dispatch('close_tallapp_upload_modal');
 
