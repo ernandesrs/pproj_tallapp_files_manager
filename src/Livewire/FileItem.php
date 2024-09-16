@@ -4,13 +4,14 @@ namespace Ernandesrs\TallAppFilesManager\Livewire;
 
 use Ernandesrs\TallAppFilesManager\Models\File;
 use Ernandesrs\TallAppFilesManager\Services\FileService;
+use Ernandesrs\TallAppFilesManager\Traits\Authorization;
 use Livewire\Attributes\Locked;
 use Livewire\Component;
 use TallStackUi\Traits\Interactions;
 
 class FileItem extends Component
 {
-    use Interactions;
+    use Interactions, Authorization;
 
     /**
      * Icon
@@ -50,8 +51,21 @@ class FileItem extends Component
      */
     function mount()
     {
-        $this->file = File::findOrFail($this->id);
-        $this->fill($this->file->only(['original_name', 'tags']));
+        $this->file = File::findOrFail($this->id, ['*']);
+
+        $canView = $this->checkAuthorization(
+            'view',
+            $this->file,
+            true
+        );
+
+        if ($canView) {
+            $this->fill($this->file
+                ->only(['original_name', 'tags']));
+        } else {
+            $this->file = $this->file
+                ->makeHidden(['name', 'tags', 'original_name', 'size', 'path', 'extension', 'created_at', 'updated_at']);
+        }
     }
 
     /**
