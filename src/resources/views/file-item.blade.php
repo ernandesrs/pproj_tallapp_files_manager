@@ -139,7 +139,7 @@
         @endif
     @endif
 
-    <div class="mt-3 flex gap-x-1">
+    <div class="flex gap-x-1">
         @if ($this->checkAuthorization('update', $file, true))
             <x-button x-on:click="$modalOpen('tallapp-item-edit-dialog-{{ $file->id }}')" icon="edit"
                 color="primary"
