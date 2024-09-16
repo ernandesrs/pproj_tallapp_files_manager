@@ -1,2 +1,6 @@
 [ done ] Criar um serviço e concentrar lógicas de validação de arquivos, criação, edição e exclusão.
-[ pending ] Implementar recursos de autorização para acesso, edição, exclusão, etc.
+[ done ] Implementar recursos de autorização para acesso, edição, exclusão, etc.
+[ pending ] Implementar recursos para associar um usuário como 'author' do upload.
+[ pending ] Implementar recursos para associar facilmente o arquivo a outros modelos.
+            Exemplo: Associar um arquivo de imagem a um Post;
+                     Associar um arquivo de imagem a um Page
