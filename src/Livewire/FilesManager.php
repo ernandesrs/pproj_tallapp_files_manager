@@ -3,6 +3,7 @@
 namespace Ernandesrs\TallAppFilesManager\Livewire;
 
 use Ernandesrs\TallAppFilesManager\Models\File;
+use Ernandesrs\TallAppFilesManager\Traits\Authorization;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 use Livewire\Attributes\On;
@@ -11,6 +12,14 @@ use Livewire\Component;
 
 class FilesManager extends Component
 {
+    use Authorization;
+
+    /**
+     * Policy class
+     * @var ?string
+     */
+    public ?string $policyClass = null;
+
     /**
      * Filter: search
      *
@@ -52,20 +61,14 @@ class FilesManager extends Component
         ];
 
     /**
-     * Mount
-     * @return void
-     */
-    public function mount()
-    {
-    }
-
-    /**
      * Render
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     #[On('close_tallapp_upload_modal'), On('tallapp_files_manager_deleted_file')]
     public function render()
     {
+        $this->checkAuthorization('viewAny', File::class);
+
         $this->type = empty($this->type) ? 'all' : $this->type;
 
         return view('tallapp-files-manager::files-manager', [

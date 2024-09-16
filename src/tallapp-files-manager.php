@@ -1,6 +1,11 @@
 <?php
 
 return [
+    /**
+     *
+     * Allowed extensions
+     *
+     */
     'allowed_extensions' => [
         'image' => [
             'png',
@@ -17,5 +22,17 @@ return [
             'doc',
             'docx'
         ],
-    ]
+    ],
+
+    /**
+     *
+     * Policy class containing this default Laravel Policy methods:
+     * viewAny:
+     * view:
+     * create:
+     * update:
+     * delete:
+     *
+     */
+    'policy' => null,
 ];
