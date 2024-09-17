@@ -8,6 +8,12 @@
             'wireId' => null,
             'id' => $file->id,
             'text' => $file->original_name,
+            'toast' => [
+                'title' => __('tallapp-files-manager::all.deletion_confirmation.title', ['name' => $file->original_name]),
+                'text' => __('tallapp-files-manager::all.deletion_confirmation.text'),
+                'confirm' => __('tallapp-files-manager::all.confirm'),
+                'cancel' => __('tallapp-files-manager::all.cancel'),
+            ],
         ]) }},
         videoPlayer: null,
 
@@ -30,9 +36,9 @@
         deleteConfirmation() {
             $interaction('dialog')
                 .wireable(this.wireId)
-                .warning('Excluir ' + this.text + '?', 'Isso não pode ser desfeito, confirme para continuar.')
-                .confirm('Confirmar', 'deletionConfirmed')
-                .cancel('Cancelar')
+                .warning(this.toast.title, this.toast.text)
+                .confirm(this.toast.confirm, 'deletionConfirmed')
+                .cancel(this.toast.cancel)
                 .send();
         }
     }"
@@ -50,49 +56,49 @@
             x-on:close="fileDetailDialogWasClosed"
             id="tallapp-item-detail-dialog-{{ $file->id }}" z-index="z-40" persistent>
             <x-slot:title>
-                Detalhes: {{ $file->original_name }}
+                {{ __('tallapp-files-manager::all.details') }}: {{ $file->original_name }}
             </x-slot:title>
             <div class="mb-5 grid grid-cols-12 gap-x-6 gap-y-3">
                 <div class="col-span-6">
-                    <div class="text-xs text-zinc-400 mb-1">Nome:</div>
+                    <div class="text-xs text-zinc-400 mb-1">{{ __('tallapp-files-manager::all.original_name') }}:</div>
                     <div class="w-full truncate">{{ $file->original_name }}</div>
                 </div>
 
                 <div class="col-span-3">
-                    <div class="text-xs text-zinc-400 mb-1">Extensão:</div>
+                    <div class="text-xs text-zinc-400 mb-1">{{ __('tallapp-files-manager::all.extension') }}:</div>
                     <div>{{ $file->extension }}</div>
                 </div>
 
                 <div class="col-span-3">
-                    <div class="text-xs text-zinc-400 mb-1">Tamanho:</div>
+                    <div class="text-xs text-zinc-400 mb-1">{{ __('tallapp-files-manager::all.size') }}:</div>
                     <div>{{ number_format($file->size / (1024 * 1024), 2) }} MB</div>
                 </div>
 
                 <div class="col-span-6">
-                    <div class="text-xs text-zinc-400 mb-1">Tags:</div>
+                    <div class="text-xs text-zinc-400 mb-1">{{ __('tallapp-files-manager::all.tags') }}:</div>
                     <div class="w-full">{{ implode(', ', $file->tags) }}</div>
                 </div>
 
                 <div class="col-span-6">
-                    <div class="text-xs text-zinc-400 mb-1">Data de upload:</div>
+                    <div class="text-xs text-zinc-400 mb-1">{{ __('tallapp-files-manager::all.upload_date') }}:</div>
                     <div>{{ $file->created_at->format('d/m/Y H:i:s') }}</div>
                 </div>
 
                 <div class="col-span-12">
-                    <div class="text-xs text-zinc-400 mb-1">Previsualização:</div>
+                    <div class="text-xs text-zinc-400 mb-1">{{ __('tallapp-files-manager::all.preview') }}:</div>
 
                     <div
                         class="relative overflow-hidden flex items-center justify-center p-2 w-full h-[350px] rounded-md">
                         @switch($file->type)
                             @case(\Ernandesrs\TallAppFilesManager\Enums\FileTypesEnum::IMAGE)
                                 <img class="absolute h-full" src="{{ \Storage::url($file->path) }}"
-                                    alt="{{ $file->original_name }} Preview">
+                                    alt="{{ $file->original_name }} {{ __('tallapp-files-manager::all.preview') }}">
                             @break
 
                             @case(\Ernandesrs\TallAppFilesManager\Enums\FileTypesEnum::DOCUMENT)
                                 <a href="{{ \Storage::url($file->path) }}" target="_blank"
                                     title="{{ $file->original_name }}">
-                                    Ver arquivo
+                                    {{ __('tallapp-files-manager::all.see_file') }}
                                 </a>
                             @break
 
@@ -109,31 +115,34 @@
             </div>
             <x-slot:footer>
                 <x-button x-on:click="$modalClose('tallapp-item-detail-dialog-{{ $file->id }}')" icon="x"
-                    text="Fechar" color="rose" />
+                    text="{{ __('tallapp-files-manager::all.close') }}" color="rose" />
             </x-slot:footer>
         </x-modal>
 
         @if ($this->checkAuthorization('update', $file, true))
             <x-modal id="tallapp-item-edit-dialog-{{ $file->id }}" z-index="z-40" persistent>
                 <x-slot:title>
-                    Editar: {{ $file->original_name }}
+                    {{ __('tallapp-files-manager::all.edit') }}: {{ $file->original_name }}
                 </x-slot:title>
                 <div class="mb-5 grid grid-cols-12 gap-6">
                     <div class="col-span-12">
                         <x-input id="original_name_{{ $uniqId }}" wire:model="original_name"
-                            label="Nome original:" />
+                            label="{{ __('tallapp-files-manager::all.original_name') }}:" />
                     </div>
                     <div class="col-span-12">
-                        <x-tag id="tags_{{ $uniqId }}" wire:model="tags" label="Tags:" />
+                        <x-tag id="tags_{{ $uniqId }}" wire:model="tags"
+                            label="{{ __('tallapp-files-manager::all.tags') }}:" />
                     </div>
                 </div>
                 <div class="flex justify-between">
-                    <x-button wire:click="update" icon="check" text="Atualizar" />
-                    <x-button x-on:click="deleteConfirmation" icon="trash" text="Excluir item" color="rose" flat />
+                    <x-button wire:click="update" icon="check"
+                        text="{{ __('tallapp-files-manager::all.update') }}" />
+                    <x-button x-on:click="deleteConfirmation" icon="trash"
+                        text="{{ __('tallapp-files-manager::all.delete_item') }}" color="rose" flat />
                 </div>
                 <x-slot:footer>
                     <x-button x-on:click="$modalClose('tallapp-item-edit-dialog-{{ $file->id }}')" icon="x"
-                        text="Fechar" color="rose" />
+                        text="{{ __('tallapp-files-manager::all.close') }}" color="rose" />
                 </x-slot:footer>
             </x-modal>
         @endif
