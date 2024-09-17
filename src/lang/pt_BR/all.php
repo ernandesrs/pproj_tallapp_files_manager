@@ -24,5 +24,12 @@ return [
     'preview' => 'Previsualização',
     'upload_date' => 'Data de upload',
     'see_file' => 'Ver arquivo',
-    'delete_item' => 'Excluir item'
+    'delete_item' => 'Excluir item',
+
+    'new_upload' => 'Novo upload',
+    'optional' => 'Opcional',
+    'tags_hint' => 'Palavras chaves que o ajuda encontrar este arquivo separados por vírgulas',
+    'save' => 'Salvar',
+    'allows' => 'Aceita',
+    'upload' => 'Upload'
 ];

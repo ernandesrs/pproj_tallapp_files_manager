@@ -7,22 +7,25 @@
         z-index="z-40"
         persistent>
         <x-slot:title>
-            Novo upload
+            {{ __('tallapp-files-manager::all.new_upload') }}
         </x-slot:title>
 
         <form class="grid grid-cols-12 gap-6">
             <div class="col-span-12">
-                <x-input wire:model="original_name" id="original_name" label="Nome:" hint="Opcional" />
+                <x-input wire:model="original_name" id="original_name" label="{{ __('tallapp-files-manager::all.name') }}:"
+                    hint="{{ __('tallapp-files-manager::all.optional') }}" />
             </div>
             <div class="col-span-12">
-                <x-tag wire:model="tags" id="tags" label="Tags:" hint="Palavras chaves que o ajuda encontrar este arquivo separados por vírgulas." />
+                <x-tag wire:model="tags" id="tags" label="{{ __('tallapp-files-manager::all.tags') }}:"
+                    hint="{{ __('tallapp-files-manager::all.tags_hint') }}" />
             </div>
             <div class="col-span-12">
                 <x-upload wire:model="file" id="file" delete delete-method="deleteUploadedFile"
-                    accept="*" hint="Aceita {{ implode(', ', \Ernandesrs\TallAppFilesManager\Models\File::allowedExtensions(merged: true)) }}.">
+                    accept="*"
+                    hint="{{ __('tallapp-files-manager::all.allows') }} {{ implode(', ', \Ernandesrs\TallAppFilesManager\Models\File::allowedExtensions(merged: true)) }}.">
                     <x-slot:footer when-uploaded>
                         <x-button class="w-full" wire:click="saveFile">
-                            Salvar
+                            {{ __('tallapp-files-manager::all.save') }}
                         </x-button>
                     </x-slot:footer>
                 </x-upload>
@@ -30,12 +33,13 @@
         </form>
 
         <x-slot:footer>
-            <x-button x-on:click="$modalClose('tallapp-file-upload-modal')" text="Fechar" icon="x" color="rose"
+            <x-button x-on:click="$modalClose('tallapp-file-upload-modal')"
+                text="{{ __('tallapp-files-manager::all.close') }}" icon="x" color="rose"
                 sm />
         </x-slot:footer>
     </x-modal>
 
     <x-button x-on:click="$modalOpen('tallapp-file-upload-modal')" class="lg:hidden" icon="arrow-up" />
     <x-button x-on:click="$modalOpen('tallapp-file-upload-modal')" class="hidden lg:flex" icon="arrow-up"
-        text="Upload" />
+        text="{{ __('tallapp-files-manager::all.upload') }}" />
 </div>
