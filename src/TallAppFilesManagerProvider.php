@@ -28,15 +28,15 @@ class TallAppFilesManagerProvider extends ServiceProvider
 
         $this->publishes([
             __DIR__ . '/tallapp-files-manager.php' => config_path('tallapp-files-manager.php')
-        ], 'config');
+        ], 'tallapp-files-manager-config');
 
         $this->publishes([
             __DIR__ . '/lang' => $this->app->langPath('vendor/ernandesrs/tallapp-files-manager')
-        ], 'lang');
+        ], 'tallapp-files-manager-lang');
 
         $this->publishes([
             __DIR__ . '/resources/views' => resource_path('/views/vendor/ernandesrs/tallapp-files-manager')
-        ], 'views');
+        ], 'tallapp-files-manager-views');
     }
 
     /**

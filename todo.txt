@@ -3,6 +3,7 @@
 [ done ] Implementar uso de arquivos de tradução nos componentes.
 [ done ] Na listagem de arquivos, implementar recurso para exibir mensagem de 'não autorizado' customizado para o componente e
             não exibir o modal padrão.
+[ done ] Configurar publish.
 [ pending ] Elaborar o guia de instalação.
 [ pending ] Implementar recursos para associar um usuário como 'author' do upload.
 [ pending ] Implementar recursos para associar facilmente o arquivo a outros modelos.
