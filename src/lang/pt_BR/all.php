@@ -9,11 +9,6 @@ return [
     'create' => 'Criar',
     'update' => 'Atualizar',
 
-    'deletion_confirmation' => [
-        'title' => 'Excluir :name?',
-        'text' => 'Isso não pode ser desfeito, confirme para continuar.'
-    ],
-
     'detail' => 'Detalhe',
     'details' => 'Detalhes',
     'name' => 'Nome',
@@ -39,4 +34,30 @@ return [
     'empty_list' => 'Nothing to list',
     'types' => 'Tipos',
     'type' => 'Tipo',
+
+    'toast' => [
+        'update' => [
+            'title' => 'Atualizado!',
+            'description' => 'Os dados foram atualizados com sucesso.'
+        ],
+        'deletion' => [
+            'title' => 'Excluído!',
+            'description' => 'O arquivo foi excluído com sucesso.'
+        ],
+
+        'deletion_confirmation' => [
+            'title' => 'Excluir :name?',
+            'description' => 'Isso não pode ser desfeito, confirme para continuar.'
+        ],
+
+        'creation' => [
+            'title' => 'Pronto!',
+            'description' => 'O arquivo foi salvo com sucesso.',
+        ],
+
+        'creation_fails' => [
+            'title' => 'Erro!',
+            'description' => 'Houve um erro ao salvar arquivo.',
+        ]
+    ],
 ];

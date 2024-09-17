@@ -56,16 +56,20 @@ class FileUpload extends Component
         $this->deleteUploadedFile(uploadedFile: $this->file);
         if (!$createdFile) {
             $this->toast()
-                ->error('Erro!', 'Houve um erro ao salvar arquivo.')
-                ->send();
+                ->error(
+                    __('tallapp-files-manager::all.toast.creation_fails.title'),
+                    __('tallapp-files-manager::all.toast.creation_fails.description')
+                )->send();
             return;
         }
 
         $this->dispatch('close_tallapp_upload_modal');
 
         $this->toast()
-            ->success('Pronto!', 'Arquivo salvo com sucesso')
-            ->send();
+            ->success(
+                __('tallapp-files-manager::all.toast.creation.title'),
+                __('tallapp-files-manager::all.toast.creation.description')
+            )->send();
     }
 
     /**

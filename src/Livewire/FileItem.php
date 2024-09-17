@@ -91,8 +91,10 @@ class FileItem extends Component
         );
 
         $this->toast()
-            ->success('Atualizado!', 'Os dados foram atualizados com sucesso')
-            ->send();
+            ->success(
+                __('tallapp-files-manager::all.toast.update.title'),
+                __('tallapp-files-manager::all.toast.update.description')
+            )->send();
 
         $this->dispatch('tallapp_files_manager_updated_file');
     }
@@ -108,8 +110,10 @@ class FileItem extends Component
         FileService::delete($this->file);
 
         $this->toast()
-            ->success('Excluído!', 'O arquivo foi excluído com sucesso.')
-            ->send();
+            ->success(
+                __('tallapp-files-manager::all.toast.deletion.title'),
+                __('tallapp-files-manager::all.toast.deletion.description')
+            )->send();
 
         $this->dispatch('tallapp_files_manager_deleted_file');
     }

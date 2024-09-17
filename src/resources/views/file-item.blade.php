@@ -9,8 +9,8 @@
             'id' => $file->id,
             'text' => $file->original_name,
             'toast' => [
-                'title' => __('tallapp-files-manager::all.deletion_confirmation.title', ['name' => $file->original_name]),
-                'text' => __('tallapp-files-manager::all.deletion_confirmation.text'),
+                'title' => __('tallapp-files-manager::all.toast.deletion_confirmation.title', ['name' => $file->original_name]),
+                'text' => __('tallapp-files-manager::all.toast.deletion_confirmation.description'),
                 'confirm' => __('tallapp-files-manager::all.confirm'),
                 'cancel' => __('tallapp-files-manager::all.cancel'),
             ],
