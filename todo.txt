@@ -1,10 +1,10 @@
 [ done ] Criar um serviço e concentrar lógicas de validação de arquivos, criação, edição e exclusão.
 [ done ] Implementar recursos de autorização para acesso, edição, exclusão, etc.
+[ done ] Implementar uso de arquivos de tradução nos componentes.
+[ done ] Na listagem de arquivos, implementar recurso para exibir mensagem de 'não autorizado' customizado para o componente e
+            não exibir o modal padrão.
+[ pending ] Elaborar o guia de instalação.
 [ pending ] Implementar recursos para associar um usuário como 'author' do upload.
 [ pending ] Implementar recursos para associar facilmente o arquivo a outros modelos.
             Exemplo: Associar um arquivo de imagem a um Post
                      Associar um arquivo de imagem a um Page
-[ done ] Implementar uso de arquivos de tradução nos componentes.
-[ pending ] Na listagem de arquivos, implementar recurso para exibir mensagem de 'não autorizado' customizado para o componente e
-            não exibir o modal padrão.
-[ pending ] Elaborar o guia de instalação.

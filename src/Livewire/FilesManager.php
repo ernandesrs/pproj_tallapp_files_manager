@@ -56,12 +56,14 @@ class FilesManager extends Component
 
     /**
      * Render
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     * @return string|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     #[On('close_tallapp_upload_modal'), On('tallapp_files_manager_deleted_file')]
     public function render()
     {
-        $this->checkAuthorization('viewAny', File::class);
+        if (!$this->checkAuthorization('viewAny', File::class, true)) {
+            return view('tallapp-files-manager::unauthorized');
+        }
 
         $this->type = empty($this->type) ? 'all' : $this->type;
 

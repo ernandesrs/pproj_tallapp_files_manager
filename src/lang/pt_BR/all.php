@@ -60,4 +60,6 @@ return [
             'description' => 'Houve um erro ao salvar arquivo.',
         ]
     ],
+
+    'unauthorized_list_access' => 'Acesso não autorizado a lista de mídias.'
 ];
