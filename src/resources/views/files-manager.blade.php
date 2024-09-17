@@ -6,10 +6,10 @@
         <div class="flex-1 flex flex-col md:flex-row">
             <div class="flex-1 flex items-center mb-4">
                 <div class="">
-                    <div class="text-sm text-zinc-400 mb-2">Você está em:</div>
+                    <div class="text-sm text-zinc-400 mb-2">{{ __('tallapp-files-manager::all.you_are_in') }}:</div>
                     <nav class="flex items-center gap-x-2 px-2 text-zinc-500">
                         @php
-                            $paths = [['text' => 'Home'], ...$paths];
+                            $paths = [['text' => __('tallapp-files-manager::all.home')], ...$paths];
                         @endphp
                         @foreach ($paths as $key => $path)
                             <a wire:navigate class="flex gap-x-1 items-center duration-200 hover:text-zinc-700"
@@ -31,19 +31,20 @@
             </div>
             <div class="md:ml-auto flex justify-start items-center gap-x-2">
                 <form class="flex-1 flex items-center gap-x-2">
-
                     <div class=" md:min-w-[125px]">
-                        <x-input wire:model.live.debounce.500="search" placeholder="Buscar" />
+                        <x-input wire:model.live.debounce.500="search"
+                            placeholder="{{ __('tallapp-files-manager::all.search') }}" />
                     </div>
                     <div class=" md:min-w-[125px]">
-                        <x-select.native wire:model.live.debounce.500="type" placeholder="Tipos" :options="$typeOptions"
+                        <x-select.native wire:model.live.debounce.500="type"
+                            placeholder="{{ __('tallapp-files-manager::all.types') }}" :options="$typeOptions"
                             select="label:label|value:value" />
                     </div>
                 </form>
 
                 @if ($this->checkAuthorization('create', \Ernandesrs\TallAppFilesManager\Models\File::class, true))
+                    <livewire:file-upload />
                 @endif
-                <livewire:file-upload />
             </div>
         </div>
     @endcomponent
@@ -68,7 +69,7 @@
                     @endforeach
                 @else
                     <div class="text-lg text-center col-span-12 text-zinc-400">
-                        Nada para listar
+                        {{ __('tallapp-files-manager::all.empty_list') }}
                     </div>
                 @endif
             </div>

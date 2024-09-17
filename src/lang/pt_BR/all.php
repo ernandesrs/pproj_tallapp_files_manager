@@ -31,5 +31,12 @@ return [
     'tags_hint' => 'Palavras chaves que o ajuda encontrar este arquivo separados por vírgulas',
     'save' => 'Salvar',
     'allows' => 'Aceita',
-    'upload' => 'Upload'
+    'upload' => 'Upload',
+
+    'you_are_in' => 'Você está em',
+    'home' => 'Início',
+    'search' => 'Buscar',
+    'empty_list' => 'Nothing to list',
+    'types' => 'Tipos',
+    'type' => 'Tipo',
 ];
