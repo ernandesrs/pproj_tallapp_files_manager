@@ -39,6 +39,7 @@ content: [
 3. Há outros arquivos que você pode querer publicar:
 
 > php artisan vendor:publish --tag=tallapp-files-manager-config
+
 > php artisan vendor:publish --tag=tallapp-files-manager-lang
 
 4. Agora você já pode usar o componente:
